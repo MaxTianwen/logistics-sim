@@ -177,7 +177,7 @@ struct Route getYellowRoute()
 struct Map addRoute(const struct Map* map, const struct Route* route)
 {
 	int r, c;
-	struct Map result = { {0}, 0 };
+	struct Map result = { 0 };
 
 	for (r = 0; r < map->numRows; r++)
 	{
@@ -264,7 +264,7 @@ int searchPath(int i, int j, const int x, const int y, const struct Map* map, st
 
 int getShortestPath(const struct Map* map, const struct Point start, const struct Point dest, struct Route* route)
 {
-	struct Route result = { {0,0}, 0, DIVERSION };
+	struct Route result = { {{0, 0}}, 0, DIVERSION };
 	struct Point last = { -1, -1 };
 	struct Point current = start;
 	int close = 0;
@@ -290,7 +290,7 @@ int getShortestPath(const struct Map* map, const struct Point start, const struc
 // Modified shortestPath function to add the destination point to the route
 struct Route getPossibleMoves(const struct Map* map, const struct Point p1, const struct Point backpath, const struct Point dest)
 {
-	struct Route result = { {0,0}, 0, DIVERSION };
+	struct Route result = { {{0, 0}}, 0, DIVERSION };
 
 	if (p1.row > 0 && (map->squares[p1.row - 1][p1.col] != 1 || (dest.row == p1.row - 1 && dest.col == p1.col))) // Move up
 		addPointToRouteIfNot(&result, p1.row - 1, p1.col, backpath);

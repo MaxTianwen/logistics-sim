@@ -100,7 +100,7 @@ int checkCurrentVolume(struct Truck* truck, double boxSize);
  * @param *shipment - a pointer that points to a shipment struct
  * @return 1 if the truck is available to carry the shipment, 0 otherwise
  */
-int isTruckAvailable(struct Truck* truck, struct Shipment* shipment);
+int isTruckAvailable(struct Truck* truck, const struct Shipment* shipment);
 
 /**
  * NAME: determineLimitingFactor

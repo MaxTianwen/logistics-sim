@@ -72,7 +72,7 @@ int checkCurrentVolume(struct Truck* truck, double boxSize)
 	return (truck->m_currentVolume + boxSize <= MAX_VOLUME);
 }
 
-int isTruckAvailable(struct Truck* truck, struct Shipment* shipment)
+int isTruckAvailable(struct Truck* truck, const struct Shipment* shipment)
 {
 	if ((truck == NULL) || (shipment == NULL))
 	{
@@ -144,7 +144,7 @@ int findTruckForShipment(struct Map* map, struct Truck truckList[], int numTruck
 			continue;
 		}
 		struct Point closestPoint = truckList[i].m_route.points[closestPointIdx];
-		struct Route currentRoute = { {0,0}, 0, DIVERSION };
+		struct Route currentRoute = { {{0, 0}}, 0, DIVERSION };
 
 		// Get the route
 		getFinalPath(map, &closestPoint, &shipment->m_dest, &currentRoute);
@@ -213,7 +213,7 @@ int findStartPoint(const struct Map* map, struct Route* route, const struct Poin
 
 	for (int i = 0; i < route->numPoints; ++i)
 	{
-		struct Route diversionRoute = { {0,0}, 0, DIVERSION };
+		struct Route diversionRoute = { {{0, 0}}, 0, DIVERSION };
 		if (getFinalPath(map, &(route->points[i]), dest, &diversionRoute))
 		{
 			if (diversionRoute.numPoints < closestDist)
@@ -229,7 +229,7 @@ int findStartPoint(const struct Map* map, struct Route* route, const struct Poin
 
 int getFinalPath(const struct Map* map, const struct Point* start, const struct Point* dest, struct Route* route)
 {
-	struct Route possible = { {0,0}, 0, DIVERSION };
+	struct Route possible = { {{0, 0}}, 0, DIVERSION };
 	struct Map newMap = waterFill;
 	struct Map* pNewMap = &newMap;
 	int isArrived = 0;
@@ -260,7 +260,7 @@ int getFinalPath(const struct Map* map, const struct Point* start, const struct 
 /* Print functions */
 void printRoute(const struct Map* map, struct Truck* truck, struct Shipment shipment)
 {
-	struct Route diversionPath = { { 0, 0 }, 0, DIVERSION };
+	struct Route diversionPath = { {{0, 0}}, 0, DIVERSION };
 
 	if (map == NULL || truck == NULL)
 	{

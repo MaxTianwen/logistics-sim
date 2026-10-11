@@ -56,7 +56,7 @@ int main(void)
 			continue;
 		}
 
-		struct Shipment shipment = { weight, size, {row - 1, colStr - 'A'} };
+		struct Shipment shipment = { weight, size, {row - 1, colStr - 'A'}, {{{0, 0}}, 0, 0} };
 		// Find the appropriate truck for the shipment
 		int truckIdx = findTruckForShipment(&map, trucks, NUM_TRUCKS, &shipment);
 

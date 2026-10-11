@@ -63,22 +63,30 @@ Enter `0 0 x` to exit. The console currently displays its original Seneca Polyte
 
 ### Visual Studio
 
-Open `SourceCode/Project.sln` with the Desktop development with C++ workload. The checked-in projects request toolset `v145` and Windows SDK `10.0`; install the requested toolset or retarget both projects to your installed version.
+Open `SourceCode/Project.sln` with Visual Studio's Desktop development with C++ workload, the v143 C++ toolset, Windows SDK, and C++ native unit testing tools installed. The projects use v143 and Windows SDK `10.0`; newer Visual Studio installations can use their installed v143 compatibility toolset.
 
-To build and run the console application, select `Project` as the startup project. Build that project directly if the test project is not yet configured.
+Select `Project` as the startup project, choose Debug/x64, build the solution, and press Ctrl+F5. No local source or object-file paths need to be configured. The test project compiles `mapping.c` and `shipment.c` directly with precompiled headers disabled for those C files.
+
+From a Visual Studio Developer PowerShell, the equivalent build command is:
+
+```powershell
+msbuild SourceCode/Project.sln /m /p:Configuration=Debug /p:Platform=x64
+.\SourceCode\x64\Debug\Project.exe
+```
 
 ## Tests and validation
 
-The test sources include boundary-value, invalid-input, capacity, and routing scenarios. To run the configured native tests:
+The test sources include boundary-value, invalid-input, capacity, and routing scenarios. Build the solution and use Visual Studio Test Explorer, or run:
 
-1. Use the Debug/x64 configuration and build the `Project` application first.
-2. In the `Test` project's C/C++ include directories, replace the original absolute source path with `$(SolutionDir)Project` and retain the Microsoft UnitTest include directory.
-3. In the linker library directories, replace the original absolute object-file path with your application build output directory, and retain the Microsoft UnitTest library directory.
-4. Ensure `mapping.obj` and `shipment.obj` are available to the linker, build `Test`, and run it in Visual Studio Test Explorer.
+```powershell
+vstest.console.exe SourceCode/x64/Debug/Test.dll /Platform:x64
+```
 
-The configured test project compiles `Test.cpp`; `blackboxTest.cpp` is also included in the repository as additional test source. The Microsoft test suite requires Visual Studio and was not executed during this README update.
+The configured test project compiles `Test.cpp`; `blackboxTest.cpp` is also included as additional test source. The Microsoft test suite requires Visual Studio.
 
-The GCC console build and the `100 0.5 12L` example followed by `0 0 x` were verified. GCC currently reports existing initializer and const-qualification warnings. This example run is a smoke check, not a claim that all routes or edge cases pass.
+The GCC console build passes `-Wall -Wextra -Werror`. The `100 0.5 12L` example followed by `0 0 x` was verified. Visual Studio builds were checked in Debug and Release for x64 and x86.
+
+The native suite currently reports **174 passed / 177 total**. Three existing tests fail: `TestDeliveryDistanceCalculation`, `MaxVolumeCheck`, and `VolumeLimitsWithTruckSelection`. The same failures were reproduced against the source before the portability and compiler-warning fixes. Building and running the example succeeds; the suite does not establish full routing or edge-case correctness.
 
 ## Repository layout
 
